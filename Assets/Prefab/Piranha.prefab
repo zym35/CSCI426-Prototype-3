@@ -200,6 +200,7 @@ GameObject:
   - component: {fileID: 6319908184700138832}
   - component: {fileID: 3959806488772746917}
   - component: {fileID: 8632241285139022378}
+  - component: {fileID: 5126654653396572130}
   m_Layer: 0
   m_Name: Piranha
   m_TagString: Untagged
@@ -291,4 +292,40 @@ MonoBehaviour:
   tongueLineRenderer: {fileID: 1126005224629918692}
   detectMin: 1
   detectMax: 10
-  tongueSpeed: 0
+  tongueSpeed: 20
+  pullForce: 500
+--- !u!58 &5126654653396572130
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5936834192397508027}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.5
