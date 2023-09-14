@@ -289,5 +289,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tongue: {fileID: 1156649619615777674}
   tongueLineRenderer: {fileID: 1126005224629918692}
-  detectDistance: 10
-  _status: 0
+  detectMin: 1
+  detectMax: 10
+  tongueSpeed: 0
