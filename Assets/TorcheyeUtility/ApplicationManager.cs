@@ -19,7 +19,7 @@ namespace TorcheyeUtility
         [Header("Audio Volume Control")] 
         [SerializeField] private KeyCode increaseVolume = KeyCode.Equals;
         [SerializeField] private KeyCode decreaseVolume = KeyCode.Minus;
-        [SerializeField] private bool autoDetectAllAudioSource;
+        [SerializeField] private bool autoDetectAllAudioSource = true;
         [SerializeField] private AudioSource[] audioSources;
         [SerializeField] private float increaseMultiplier = 1.5f;
         [SerializeField] private float decreaseMultiplier = 0.75f;
