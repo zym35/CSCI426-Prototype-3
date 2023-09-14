@@ -14,7 +14,8 @@ public class Player : MonoBehaviour
     public TMP_Text scoreCounter;
     private int score = 0;
     private int highestPosition;
-    
+    public GameObject popupScorePrefab;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -39,7 +40,10 @@ public class Player : MonoBehaviour
                 attachedPiranhas.RemoveAt(0);
                 // jump
                 rigidbody.AddForce(Vector2.up * jumpAmount, ForceMode2D.Impulse);
+                // show score
                 AddScore(100);
+                GameObject popupText = Instantiate(popupScorePrefab, transform);
+                popupText.transform.GetChild(0).GetComponent<TextMeshPro>().SetText("+100");
             }
         }
 

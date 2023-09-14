@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class Piranha : MonoBehaviour
 {
@@ -17,7 +18,7 @@ public class Piranha : MonoBehaviour
     private float _alertTimer = 0.5f;
     private Rigidbody2D _playerRb;
     private bool _toDestroy;
-    
+
     private enum Status
     {
         Idle,
