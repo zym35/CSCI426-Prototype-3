@@ -25,9 +25,9 @@ public class Player : MonoBehaviour
                 // detach from the first one
                 Piranha first = attachedPiranhas.Dequeue();
                 first.Cut();
+                // jump
+                rigidbody.AddForce(Vector2.up * jumpAmount, ForceMode2D.Impulse);
             }
-            // jump
-            rigidbody.AddForce(Vector2.up * jumpAmount, ForceMode2D.Impulse);
         }
     }
 
