@@ -6,6 +6,7 @@ public class Piranha : MonoBehaviour
 {
     public Transform tongue;
     public LineRenderer tongueLineRenderer;
+    public Color shootColor, pullColor, retreatColor;
     public float detectMin, detectMax;
     public float tongueSpeed;
     public float pullForce;
@@ -15,6 +16,7 @@ public class Piranha : MonoBehaviour
     private GameObject _player;
     private float _alertTimer = 0.5f;
     private Rigidbody2D _playerRb;
+    private bool _toDestroy;
     
     private enum Status
     {
@@ -37,6 +39,7 @@ public class Piranha : MonoBehaviour
     public void Cut()
     {
         _status = Status.Retreat;
+        _toDestroy = true;
     }
 
     private void Update()
@@ -65,6 +68,7 @@ public class Piranha : MonoBehaviour
                 }
                 break;
             case Status.Shoot:
+                tongueLineRenderer.endColor = shootColor;
                 if (TongueIsOut(.1f) && BelowPlayer() || TongueIsTooLong())
                 {
                     _status = Status.Retreat;
@@ -86,6 +90,7 @@ public class Piranha : MonoBehaviour
                 break;
             case Status.Pull:
                 tongue.position = _player.transform.position;
+                tongueLineRenderer.endColor = pullColor;
                 if (TongueIsOut(.1f) && BelowPlayer() || TongueIsTooLong())
                 {
                     _status = Status.Retreat;
@@ -94,10 +99,19 @@ public class Piranha : MonoBehaviour
                 break;
             case Status.Retreat:
                 MoveTongue(transform.position);
+                tongueLineRenderer.endColor = retreatColor;
                 if ((transform.position - tongue.position).sqrMagnitude < .1f)
                 {
                     tongue.SetParent(transform);
-                    _status = Status.Idle;
+                    if (_toDestroy)
+                    {
+                        // TODO: death effect
+                        Destroy(gameObject);
+                    }
+                    else
+                    {
+                        _status = Status.Idle;
+                    }
                 }
                 break;
             default:
@@ -122,7 +136,8 @@ public class Piranha : MonoBehaviour
             // TODO: player death
             tongue.SetParent(transform);
             tongue.localPosition = Vector3.zero;
-            _status = Status.Idle;
+            _status = Status.Retreat;
+            _player.GetComponent<Player>().DetachPiranha(this);
         }
     }
 
