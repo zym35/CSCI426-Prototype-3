@@ -9,17 +9,17 @@ public class Player : MonoBehaviour
     public float jumpAmount;
     public float maxSpeed;
 
-    Queue<Piranha> attachedPiranhas;
+    List<Piranha> attachedPiranhas;
 
     public TMP_Text scoreCounter;
     private int score = 0;
-    private float highestPosition;
+    private int highestPosition;
     
     // Start is called before the first frame update
     void Start()
     {
-        attachedPiranhas = new Queue<Piranha>();
-        highestPosition = transform.position.y;
+        attachedPiranhas = new List<Piranha>();
+        highestPosition = (int)transform.position.y;
     }
 
     // Update is called once per frame
@@ -34,24 +34,31 @@ public class Player : MonoBehaviour
             if (attachedPiranhas.Count > 0)
             {
                 // detach from the first one
-                Piranha first = attachedPiranhas.Dequeue();
+                Piranha first = attachedPiranhas[0];
                 first.Cut();
+                attachedPiranhas.RemoveAt(0);
                 // jump
                 rigidbody.AddForce(Vector2.up * jumpAmount, ForceMode2D.Impulse);
                 AddScore(100);
             }
         }
 
+        // checked if a new height was reached
+        if ((int)transform.position.y > highestPosition)
+        {
+            AddScore((int)transform.position.y - highestPosition);
+            highestPosition = (int)transform.position.y;
+        }
     }
 
     public void AttachPiranha(Piranha piranha)
     {
-        attachedPiranhas.Enqueue(piranha);
+        attachedPiranhas.Add(piranha);
     }
 
-    public void DetachPiranha()
+    public void DetachPiranha(Piranha piranha)
     {
-        attachedPiranhas.Dequeue();
+        attachedPiranhas.Remove(piranha);
     }
 
     private void AddScore(int points)
