@@ -9,6 +9,7 @@ public class Piranha : MonoBehaviour
     public float detectMin, detectMax;
     public float tongueSpeed;
     public float pullForce;
+    public float maxTongueLength;
 
     private GameObject _player;
     private float _alertTimer = 0.5f;
@@ -42,6 +43,10 @@ public class Piranha : MonoBehaviour
         tongueLineRenderer.SetPosition(0, transform.position);
         tongueLineRenderer.SetPosition(1, tongue.position);
         
+        // temp hack
+        if (_playerRb.velocity.magnitude > 25)
+            _playerRb.velocity = _playerRb.velocity.normalized * 25;
+        
         switch (_status)
         {
             case Status.Idle:
@@ -63,21 +68,21 @@ public class Piranha : MonoBehaviour
                 }
                 break;
             case Status.Shoot:
-                if (TongueIsOut() && BelowPlayer())
+                if (TongueIsOut() && BelowPlayer() || TongueIsTooLong())
                 {
                     _status = Status.Retreat;
                 }
                 else if (MoveTongue(_player.transform.position))
                 {
                     // the tongue captures player
-                    // TODO: call player controller
+                    _player.GetComponent<Player>().AttachPiranha(this);
                     // TODO: effect
                     _status = Status.Pull;
                 }
                 break;
             case Status.Pull:
                 tongue.position = _player.transform.position;
-                if (TongueIsOut() && BelowPlayer())
+                if (TongueIsOut() && BelowPlayer() || TongueIsTooLong())
                 {
                     _status = Status.Retreat;
                 }
@@ -100,7 +105,7 @@ public class Piranha : MonoBehaviour
         {
             // add force to player
             Vector2 vec = transform.position - _player.transform.position;
-            float multiplier = 1f / vec.magnitude;
+            float multiplier = vec.magnitude;
             _playerRb.AddForce(pullForce * multiplier * vec.normalized);
         }
     }
@@ -114,6 +119,11 @@ public class Piranha : MonoBehaviour
             tongue.localPosition = Vector3.zero;
             _status = Status.Idle;
         }
+    }
+
+    private bool TongueIsTooLong()
+    {
+        return Vector2.Distance(transform.position, tongue.position) > maxTongueLength;
     }
 
     // return if at dest

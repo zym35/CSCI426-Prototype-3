@@ -291,9 +291,10 @@ MonoBehaviour:
   tongue: {fileID: 1156649619615777674}
   tongueLineRenderer: {fileID: 1126005224629918692}
   detectMin: 1
-  detectMax: 10
+  detectMax: 5
   tongueSpeed: 20
-  pullForce: 500
+  pullForce: 10
+  maxTongueLength: 10
 --- !u!58 &5126654653396572130
 CircleCollider2D:
   m_ObjectHideFlags: 0
