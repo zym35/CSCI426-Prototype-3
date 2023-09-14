@@ -294,11 +294,11 @@ MonoBehaviour:
   pullColor: {r: 1, g: 0, b: 0, a: 1}
   retreatColor: {r: 0.22924393, g: 0.041711133, b: 0.3490566, a: 1}
   detectMin: 1
-  detectMax: 5
+  detectMax: 7
   tongueSpeed: 13
-  pullForce: 7
+  pullForce: 8.5
   maxTongueLength: 10
-  onetimeBoostForce: 0.5
+  onetimeBoostForce: 1
 --- !u!58 &5126654653396572130
 CircleCollider2D:
   m_ObjectHideFlags: 0
