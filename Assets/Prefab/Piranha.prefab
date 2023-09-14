@@ -28,7 +28,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 6319908184700138832}
@@ -291,10 +291,11 @@ MonoBehaviour:
   tongue: {fileID: 1156649619615777674}
   tongueLineRenderer: {fileID: 1126005224629918692}
   detectMin: 1
-  detectMax: 5
-  tongueSpeed: 20
-  pullForce: 10
+  detectMax: 8
+  tongueSpeed: 13
+  pullForce: 8
   maxTongueLength: 10
+  onetimeBoostForce: 1
 --- !u!58 &5126654653396572130
 CircleCollider2D:
   m_ObjectHideFlags: 0

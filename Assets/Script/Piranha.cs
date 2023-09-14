@@ -10,6 +10,7 @@ public class Piranha : MonoBehaviour
     public float tongueSpeed;
     public float pullForce;
     public float maxTongueLength;
+    public float onetimeBoostForce;
 
     private GameObject _player;
     private float _alertTimer = 0.5f;
@@ -43,10 +44,6 @@ public class Piranha : MonoBehaviour
         tongueLineRenderer.SetPosition(0, transform.position);
         tongueLineRenderer.SetPosition(1, tongue.position);
         
-        // temp hack
-        if (_playerRb.velocity.magnitude > 25)
-            _playerRb.velocity = _playerRb.velocity.normalized * 25;
-        
         switch (_status)
         {
             case Status.Idle:
@@ -68,27 +65,36 @@ public class Piranha : MonoBehaviour
                 }
                 break;
             case Status.Shoot:
-                if (TongueIsOut() && BelowPlayer() || TongueIsTooLong())
+                if (TongueIsOut(.1f) && BelowPlayer() || TongueIsTooLong())
                 {
                     _status = Status.Retreat;
+                    _player.GetComponent<Player>().DetachPiranha(this);
                 }
-                else if (MoveTongue(_player.transform.position))
+                else
                 {
-                    // the tongue captures player
-                    _player.GetComponent<Player>().AttachPiranha(this);
-                    // TODO: effect
-                    _status = Status.Pull;
+                    MoveTongue(_player.transform.position);
+                    if ((_player.transform.position - tongue.position).sqrMagnitude < 1)
+                    {
+                        // the tongue captures player
+                        _player.GetComponent<Player>().AttachPiranha(this);
+                        // boost force for a short period of time
+                        _playerRb.AddForce(onetimeBoostForce * (transform.position - _player.transform.position), ForceMode2D.Impulse);
+                        // TODO: effect
+                        _status = Status.Pull;
+                    }
                 }
                 break;
             case Status.Pull:
                 tongue.position = _player.transform.position;
-                if (TongueIsOut() && BelowPlayer() || TongueIsTooLong())
+                if (TongueIsOut(.1f) && BelowPlayer() || TongueIsTooLong())
                 {
                     _status = Status.Retreat;
+                    _player.GetComponent<Player>().DetachPiranha(this);
                 }
                 break;
             case Status.Retreat:
-                if (MoveTongue(transform.position))
+                MoveTongue(transform.position);
+                if ((transform.position - tongue.position).sqrMagnitude < .1f)
                 {
                     tongue.SetParent(transform);
                     _status = Status.Idle;
@@ -105,8 +111,7 @@ public class Piranha : MonoBehaviour
         {
             // add force to player
             Vector2 vec = transform.position - _player.transform.position;
-            float multiplier = vec.magnitude;
-            _playerRb.AddForce(pullForce * multiplier * vec.normalized);
+            _playerRb.AddForce(pullForce  * vec);
         }
     }
 
@@ -125,12 +130,10 @@ public class Piranha : MonoBehaviour
     {
         return Vector2.Distance(transform.position, tongue.position) > maxTongueLength;
     }
-
-    // return if at dest
-    private bool MoveTongue(Vector2 dest)
+    
+    private void MoveTongue(Vector3 dest)
     {
-        tongue.position = Vector2.Lerp(tongue.position, dest, tongueSpeed * Time.deltaTime);
-        return Vector2.Distance(dest, tongue.position) < .01f;
+        tongue.position = Vector3.Lerp(tongue.position, dest, tongueSpeed * Time.deltaTime);
     }
 
     private bool BelowPlayer()
@@ -138,8 +141,8 @@ public class Piranha : MonoBehaviour
         return transform.position.y < _player.transform.position.y;
     }
 
-    private bool TongueIsOut()
+    private bool TongueIsOut(float distSqr)
     {
-        return Vector2.Distance(transform.position, tongue.position) > .01f;
+        return (transform.position - tongue.position).sqrMagnitude > distSqr;
     }
 }
