@@ -19,6 +19,8 @@ public class Piranha : MonoBehaviour
     private Rigidbody2D _playerRb;
     private bool _toDestroy;
 
+    public GameObject popupAlertPrefab;
+
     private enum Status
     {
         Idle,
@@ -57,6 +59,8 @@ public class Piranha : MonoBehaviour
                 {
                     // TODO: spawn alert
                     _status = Status.Alert;
+                    GameObject popupText = Instantiate(popupAlertPrefab, transform);
+                    popupText.transform.GetChild(0).GetComponent<TextMeshPro>().SetText("!");
                 }
                 break;
             case Status.Alert:

@@ -299,6 +299,7 @@ MonoBehaviour:
   pullForce: 8.5
   maxTongueLength: 10
   onetimeBoostForce: 1
+  popupAlertPrefab: {fileID: 6986777950966810109, guid: 93cd0ff034be20f4a9fe87098dca59ef, type: 3}
 --- !u!58 &5126654653396572130
 CircleCollider2D:
   m_ObjectHideFlags: 0
