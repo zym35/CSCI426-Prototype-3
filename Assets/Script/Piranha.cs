@@ -40,8 +40,9 @@ public class Piranha : MonoBehaviour
 
     public void Cut()
     {
-        _status = Status.Retreat;
-        _toDestroy = true;
+        // TODO: death effect
+        tongue.SetParent(transform);
+        Destroy(gameObject);
     }
 
     private void Update()
@@ -104,15 +105,7 @@ public class Piranha : MonoBehaviour
                 if ((transform.position - tongue.position).sqrMagnitude < .01f)
                 {
                     tongue.SetParent(transform);
-                    if (_toDestroy)
-                    {
-                        // TODO: death effect
-                        Destroy(gameObject);
-                    }
-                    else
-                    {
-                        _status = Status.Idle;
-                    }
+                    _status = Status.Idle;
                 }
                 break;
             default:
