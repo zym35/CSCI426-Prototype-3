@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1156649619615777674}
   - component: {fileID: 6022854547651763976}
   - component: {fileID: 1126005224629918692}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Tongue
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -201,9 +201,9 @@ GameObject:
   - component: {fileID: 3959806488772746917}
   - component: {fileID: 8632241285139022378}
   - component: {fileID: 5126654653396572130}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Piranha
-  m_TagString: Untagged
+  m_TagString: Danger
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -295,12 +295,11 @@ MonoBehaviour:
   retreatColor: {r: 0.22924393, g: 0.041711133, b: 0.3490566, a: 1}
   detectMin: 1
   detectMax: 7
-  tongueSpeed: 200
-  pullForce: 5
+  tongueSpeed: 25
+  pullForce: 6.5
   maxTongueLength: 10
   onetimeBoostForce: 0
   destroyBehindDist: 50
-  popupAlertPrefab: {fileID: 6986777950966810109, guid: 93cd0ff034be20f4a9fe87098dca59ef, type: 3}
 --- !u!58 &5126654653396572130
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -330,7 +329,7 @@ CircleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}

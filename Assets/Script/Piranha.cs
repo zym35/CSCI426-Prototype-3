@@ -18,8 +18,7 @@ public class Piranha : MonoBehaviour
     private GameObject _player;
     private Rigidbody2D _playerRb;
     private bool _toDestroy;
-
-    public GameObject popupAlertPrefab;
+    private int _defaultLayerMask;
 
     private enum Status
     {
@@ -36,6 +35,7 @@ public class Piranha : MonoBehaviour
         _player = GameObject.FindGameObjectWithTag("Player");
         tongue.position = transform.position;
         _playerRb = _player.GetComponent<Rigidbody2D>();
+        _defaultLayerMask = LayerMask.GetMask("Default");
     }
 
     public void Cut()
@@ -49,18 +49,18 @@ public class Piranha : MonoBehaviour
         tongueLineRenderer.SetPosition(0, transform.position);
         tongueLineRenderer.SetPosition(1, tongue.position);
         
+        var t2p = _player.transform.position - transform.position;
         switch (_status)
         {
             case Status.Idle:
                 // check player below
-                if (transform.position.y - _player.transform.position.y < detectMax 
-                    && transform.position.y - _player.transform.position.y > detectMin && !BelowPlayer())
+                if (-t2p.y < detectMax && -t2p.y > detectMin && !BelowPlayer(t2p) && !Blocked(t2p))
                 {
                     tongue.SetParent(null);
                     _status = Status.Shoot;
                 }
                 
-                if (_player.transform.position.y - destroyBehindDist > transform.position.y)
+                if (t2p.y > destroyBehindDist)
                 {
                     Destroy(gameObject);
                 }
@@ -68,7 +68,7 @@ public class Piranha : MonoBehaviour
             case Status.Shoot:
                 tongueLineRenderer.endColor = shootColor;
                 tongueLineRenderer.startColor = shootColor;
-                if (TongueIsOut(.1f) && BelowPlayer() || TongueIsTooLong())
+                if (TongueIsOut(.01f) && BelowPlayer(t2p) || TongueIsTooLong())
                 {
                     _status = Status.Retreat;
                     _player.GetComponent<Player>().DetachPiranha(this);
@@ -81,7 +81,7 @@ public class Piranha : MonoBehaviour
                         // the tongue captures player
                         _player.GetComponent<Player>().AttachPiranha(this);
                         // boost force for a short period of time
-                        _playerRb.AddForce(onetimeBoostForce * (transform.position - _player.transform.position), ForceMode2D.Impulse);
+                        _playerRb.AddForce(onetimeBoostForce * -t2p, ForceMode2D.Impulse);
                         // TODO: effect
                         _status = Status.Pull;
                     }
@@ -91,7 +91,7 @@ public class Piranha : MonoBehaviour
                 tongue.position = _player.transform.position;
                 tongueLineRenderer.endColor = pullColor;
                 tongueLineRenderer.startColor = pullColor;
-                if (TongueIsOut(.1f) && BelowPlayer() || TongueIsTooLong())
+                if (TongueIsOut(.01f) && BelowPlayer(t2p) || TongueIsTooLong())
                 {
                     _status = Status.Retreat;
                     _player.GetComponent<Player>().DetachPiranha(this);
@@ -101,7 +101,7 @@ public class Piranha : MonoBehaviour
                 MoveTongue(transform.position);
                 tongueLineRenderer.endColor = retreatColor;
                 tongueLineRenderer.startColor = retreatColor;
-                if ((transform.position - tongue.position).sqrMagnitude < .1f)
+                if ((transform.position - tongue.position).sqrMagnitude < .01f)
                 {
                     tongue.SetParent(transform);
                     if (_toDestroy)
@@ -130,16 +130,9 @@ public class Piranha : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    private bool Blocked(Vector3 t2p)
     {
-        if (_status == Status.Pull && other.CompareTag("Player"))
-        {
-            // TODO: player death
-            tongue.SetParent(transform);
-            tongue.localPosition = Vector3.zero;
-            _status = Status.Retreat;
-            _player.GetComponent<Player>().DetachPiranha(this);
-        }
+        return Physics2D.Raycast(transform.position, t2p.normalized, t2p.magnitude, _defaultLayerMask);
     }
 
     private bool TongueIsTooLong()
@@ -149,14 +142,13 @@ public class Piranha : MonoBehaviour
     
     private void MoveTongue(Vector3 dest)
     {
-        //tongue.position = Vector3.Lerp(tongue.position, dest, tongueSpeed * Time.deltaTime);
         var dir = (dest - tongue.position).normalized;
         tongue.position += tongueSpeed * Time.deltaTime * dir;
     }
 
-    private bool BelowPlayer()
+    private bool BelowPlayer(Vector3 t2p)
     {
-        return transform.position.y < _player.transform.position.y;
+        return t2p.y > 0;
     }
 
     private bool TongueIsOut(float distSqr)
