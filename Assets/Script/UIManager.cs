@@ -25,7 +25,9 @@ public class UIManager : MonoBehaviour
 
     private void Update()
     {
-        floodText.text = $"Flood ↓ {player.position.y - flood.position.y - 22:F2}m";
+        var dist = player.position.y - flood.position.y - 26;
+        floodText.text = $"Flood ↓ {dist:F2}m";
+        floodText.rectTransform.localScale = Mathf.Clamp(2f - dist / 12f, 1, 4) * Vector3.one;
     }
 
     public void Fill(float amount)

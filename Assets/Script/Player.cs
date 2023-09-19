@@ -108,7 +108,7 @@ public class Player : MonoBehaviour
                 attachedPiranhas.RemoveAt(0);
 
                 AudioManager.Instance.PlaySoundEffect(AudioManager.SoundEffect.CutTongue);
-                AddScore(100, true);
+                AddScore(20, true);
             }
 
             _chargeTimer = 0;
