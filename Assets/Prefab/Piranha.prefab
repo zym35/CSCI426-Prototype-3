@@ -295,10 +295,11 @@ MonoBehaviour:
   retreatColor: {r: 0.22924393, g: 0.041711133, b: 0.3490566, a: 1}
   detectMin: 1
   detectMax: 7
-  tongueSpeed: 13
-  pullForce: 8.5
+  tongueSpeed: 8
+  pullForce: 5
   maxTongueLength: 10
-  onetimeBoostForce: 1
+  onetimeBoostForce: 0
+  destroyBehindDist: 50
   popupAlertPrefab: {fileID: 6986777950966810109, guid: 93cd0ff034be20f4a9fe87098dca59ef, type: 3}
 --- !u!58 &5126654653396572130
 CircleCollider2D:

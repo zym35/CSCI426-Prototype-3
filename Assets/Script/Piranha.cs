@@ -13,9 +13,9 @@ public class Piranha : MonoBehaviour
     public float pullForce;
     public float maxTongueLength;
     public float onetimeBoostForce;
+    public float destroyBehindDist = 20;
 
     private GameObject _player;
-    private float _alertTimer = 0.5f;
     private Rigidbody2D _playerRb;
     private bool _toDestroy;
 
@@ -24,7 +24,6 @@ public class Piranha : MonoBehaviour
     private enum Status
     {
         Idle,
-        Alert,
         Shoot,
         Pull,
         Retreat
@@ -57,19 +56,13 @@ public class Piranha : MonoBehaviour
                 if (transform.position.y - _player.transform.position.y < detectMax 
                     && transform.position.y - _player.transform.position.y > detectMin && !BelowPlayer())
                 {
-                    // TODO: spawn alert
-                    _status = Status.Alert;
-                    GameObject popupText = Instantiate(popupAlertPrefab, transform);
-                    popupText.transform.GetChild(0).GetComponent<TextMeshPro>().SetText("!");
-                }
-                break;
-            case Status.Alert:
-                _alertTimer -= Time.deltaTime;
-                if (_alertTimer < 0)
-                {
-                    // TODO: Destroy alert
                     tongue.SetParent(null);
                     _status = Status.Shoot;
+                }
+                
+                if (_player.transform.position.y - destroyBehindDist > transform.position.y)
+                {
+                    Destroy(gameObject);
                 }
                 break;
             case Status.Shoot:
