@@ -19,13 +19,16 @@ public class LevelGenerator : MonoBehaviour
 
     private void Start()
     {
-        _lastSpawnY = startPiranha.position.y;
+        //_lastSpawnY = startPiranha.position.y;
     }
 
     private void Update()
     {
         walls.position = new Vector3(0, player.position.y, 0);
-        
+    }
+
+    private void SpawnPiranha()
+    {
         if (player.position.y + spawnAheadDist > _lastSpawnY)
         {
             var pos = new Vector2(Random.Range(-piranhaSpawnRange, piranhaSpawnRange), _lastSpawnY + unitLength);

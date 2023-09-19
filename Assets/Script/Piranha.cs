@@ -67,6 +67,7 @@ public class Piranha : MonoBehaviour
                 break;
             case Status.Shoot:
                 tongueLineRenderer.endColor = shootColor;
+                tongueLineRenderer.startColor = shootColor;
                 if (TongueIsOut(.1f) && BelowPlayer() || TongueIsTooLong())
                 {
                     _status = Status.Retreat;
@@ -89,6 +90,7 @@ public class Piranha : MonoBehaviour
             case Status.Pull:
                 tongue.position = _player.transform.position;
                 tongueLineRenderer.endColor = pullColor;
+                tongueLineRenderer.startColor = pullColor;
                 if (TongueIsOut(.1f) && BelowPlayer() || TongueIsTooLong())
                 {
                     _status = Status.Retreat;
@@ -98,6 +100,7 @@ public class Piranha : MonoBehaviour
             case Status.Retreat:
                 MoveTongue(transform.position);
                 tongueLineRenderer.endColor = retreatColor;
+                tongueLineRenderer.startColor = retreatColor;
                 if ((transform.position - tongue.position).sqrMagnitude < .1f)
                 {
                     tongue.SetParent(transform);
@@ -146,7 +149,9 @@ public class Piranha : MonoBehaviour
     
     private void MoveTongue(Vector3 dest)
     {
-        tongue.position = Vector3.Lerp(tongue.position, dest, tongueSpeed * Time.deltaTime);
+        //tongue.position = Vector3.Lerp(tongue.position, dest, tongueSpeed * Time.deltaTime);
+        var dir = (dest - tongue.position).normalized;
+        tongue.position += tongueSpeed * Time.deltaTime * dir;
     }
 
     private bool BelowPlayer()
