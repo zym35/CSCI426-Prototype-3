@@ -295,8 +295,8 @@ MonoBehaviour:
   retreatColor: {r: 0.22924393, g: 0.041711133, b: 0.3490566, a: 1}
   detectMin: 1
   detectMax: 15
-  tongueSpeed: 12
-  pullForce: 4
+  tongueSpeed: 14
+  pullForce: 4.5
   maxTongueLength: 19
   onetimeBoostForce: 0
   destroyBehindDist: 50

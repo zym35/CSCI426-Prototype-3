@@ -10,6 +10,9 @@ namespace TorcheyeUtility
         public enum SoundEffect
         {
             // Add name of the sound here
+            Jump,
+            ShootTongue,
+            CutTongue
         }
 
         public enum Music
@@ -21,6 +24,7 @@ namespace TorcheyeUtility
         public AudioSource soundEffectSource, musicSource;
         [Tooltip("whether the first music clip auto plays and loops at the start of game")]
         public bool startPlayingMusicLoop = true;
+        public float startPlayingMusicLoopVolume = 1;
 
         // Singleton and DontDestroy instance
         private void Awake()
@@ -43,7 +47,7 @@ namespace TorcheyeUtility
         private void Start()
         {
             if (startPlayingMusicLoop)
-                PlayMusic(0);
+                PlayMusic(0, startPlayingMusicLoopVolume);
         }
 
         /// <summary>

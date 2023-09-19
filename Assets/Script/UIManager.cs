@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,6 +10,8 @@ public class UIManager : MonoBehaviour
     public static UIManager Instance;
     public Image[] bar;
     public Color[] stageColors;
+    public TMP_Text floodText;
+    public Transform player, flood;
 
     private void Awake()
     {
@@ -18,6 +21,11 @@ public class UIManager : MonoBehaviour
     private void Start()
     {
         Clear();
+    }
+
+    private void Update()
+    {
+        floodText.text = $"Flood ↓ {player.position.y - flood.position.y - 22:F2}m";
     }
 
     public void Fill(float amount)

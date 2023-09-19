@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using TorcheyeUtility;
 
 public class Piranha : MonoBehaviour
 {
@@ -59,6 +60,7 @@ public class Piranha : MonoBehaviour
                 {
                     tongue.SetParent(null);
                     _status = Status.Shoot;
+                    AudioManager.Instance.PlaySoundEffect(AudioManager.SoundEffect.ShootTongue);
                 }
                 
                 if (t2p.y > destroyBehindDist)

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using TorcheyeUtility;
 using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
@@ -87,7 +88,10 @@ public class Player : MonoBehaviour
             _chargeTimer += Time.deltaTime;
             var amount = Mathf.Clamp(_chargeTimer / chargeTimeStep, 0, 3);
 
-            _speedMultiplier = Mathf.Pow(chargeSlowMultiplier, amount);
+            if (OnGround())
+            {
+                _speedMultiplier = Mathf.Pow(chargeSlowMultiplier, amount);
+            }
             _jumpPower = (int)amount * jumpPowerStep * (attachedPiranhas.Count > 0 ? .5f: 1);
             
             UIManager.Instance.Fill(amount);
@@ -103,6 +107,7 @@ public class Player : MonoBehaviour
                 first.Cut();
                 attachedPiranhas.RemoveAt(0);
 
+                AudioManager.Instance.PlaySoundEffect(AudioManager.SoundEffect.CutTongue);
                 AddScore(100, true);
             }
 
@@ -122,11 +127,12 @@ public class Player : MonoBehaviour
     {
         if (!OnGround())
         {
-            // TODO: ui show not on ground
+            // TODO: ui and sound show not on ground
         }
         else
         {
             _rb.AddForce(Vector2.up * _jumpPower, ForceMode2D.Impulse);
+            AudioManager.Instance.PlaySoundEffect(AudioManager.SoundEffect.Jump, .5f);
         }
     }
 
