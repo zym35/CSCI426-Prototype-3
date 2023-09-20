@@ -25,6 +25,7 @@ public class Player : MonoBehaviour
     private float _speedMultiplier = 1;
 
     public CameraShake cameraShake;
+    public GameObject jumpEffect;
 
     private void Awake()
     {
@@ -79,8 +80,15 @@ public class Player : MonoBehaviour
                 _moveDir.x = 1;
         }
 
-        if (other.collider.CompareTag("Danger"))
+        if (other.collider.CompareTag("Spike"))
         {
+            AudioManager.Instance.PlaySoundEffect(AudioManager.SoundEffect.Spikes);
+            Death();
+        }
+
+        if (other.collider.CompareTag("Flood"))
+        {
+            AudioManager.Instance.PlaySoundEffect(AudioManager.SoundEffect.Water);
             Death();
         }
     }
@@ -137,6 +145,9 @@ public class Player : MonoBehaviour
         {
             _rb.AddForce(Vector2.up * _jumpPower, ForceMode2D.Impulse);
             AudioManager.Instance.PlaySoundEffect(AudioManager.SoundEffect.Jump, .5f);
+
+            GameObject JumpEffectIns = Instantiate(jumpEffect, transform.position - new Vector3(0, 1, 0), Quaternion.identity);
+            Destroy(JumpEffectIns, 1);
         }
     }
 

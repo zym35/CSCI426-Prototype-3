@@ -12,7 +12,9 @@ namespace TorcheyeUtility
             // Add name of the sound here
             Jump,
             ShootTongue,
-            CutTongue
+            CutTongue,
+            Spikes,
+            Water
         }
 
         public enum Music
