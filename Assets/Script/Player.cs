@@ -24,6 +24,8 @@ public class Player : MonoBehaviour
     private int _defaultLayerMask;
     private float _speedMultiplier = 1;
 
+    public CameraShake cameraShake;
+
     private void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
@@ -37,6 +39,7 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
+
         if (_dead)
         {
             if (Input.GetKeyDown(KeyCode.Space))
@@ -67,6 +70,7 @@ public class Player : MonoBehaviour
     {
         if (other.collider.CompareTag("Wall"))
         {
+            StartCoroutine(cameraShake.Shake(2.0f, 4.0f));
             if (_moveDir.x > 0 && other.transform.position.x > transform.position.x)
             {
                 _moveDir.x = -1;
