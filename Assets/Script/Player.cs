@@ -23,10 +23,10 @@ public class Player : MonoBehaviour
     private bool _dead;
     private int _defaultLayerMask;
     private float _speedMultiplier = 1;
-
-    public CameraShake cameraShake;
+    
+    public CameraZoom cameraShake;
     public GameObject jumpEffect;
-
+    
     private void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
@@ -69,9 +69,11 @@ public class Player : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other)
     {
+        if (_rb.velocity.magnitude > 1)
+            StartCoroutine(cameraShake.Shake(_rb.velocity.magnitude));
+        
         if (other.collider.CompareTag("Wall"))
         {
-            StartCoroutine(cameraShake.Shake(2.0f, 4.0f));
             if (_moveDir.x > 0 && other.transform.position.x > transform.position.x)
             {
                 _moveDir.x = -1;
@@ -80,7 +82,7 @@ public class Player : MonoBehaviour
                 _moveDir.x = 1;
         }
 
-        if (other.collider.CompareTag("Spike"))
+        if (other.collider.CompareTag("Spike") || other.collider.CompareTag("Danger"))
         {
             AudioManager.Instance.PlaySoundEffect(AudioManager.SoundEffect.Spikes);
             Death();
@@ -111,6 +113,18 @@ public class Player : MonoBehaviour
 
         if (Input.GetKeyUp(KeyCode.Space))
         {
+            _chargeTimer = 0;
+            _speedMultiplier = 1;
+            UIManager.Instance.Clear();
+            if (OnGround() || !OnGround() && attachedPiranhas.Count > 0)
+            {
+                Jump();
+            }
+            else
+            {
+                //TODO: audio warning cant jump
+            }
+            
             // check for piranhas
             if (attachedPiranhas.Count > 0)
             {
@@ -122,11 +136,6 @@ public class Player : MonoBehaviour
                 AudioManager.Instance.PlaySoundEffect(AudioManager.SoundEffect.CutTongue);
                 AddScore(20, true);
             }
-
-            _chargeTimer = 0;
-            _speedMultiplier = 1;
-            UIManager.Instance.Clear();
-            Jump();
         }
     }
 
@@ -137,11 +146,7 @@ public class Player : MonoBehaviour
 
     private void Jump()
     {
-        if (!OnGround())
-        {
-            // TODO: ui and sound show not on ground
-        }
-        else
+        if (_jumpPower > 0)
         {
             _rb.AddForce(Vector2.up * _jumpPower, ForceMode2D.Impulse);
             AudioManager.Instance.PlaySoundEffect(AudioManager.SoundEffect.Jump, .5f);

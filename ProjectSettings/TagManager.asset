@@ -6,6 +6,9 @@ TagManager:
   tags:
   - Wall
   - Danger
+  - Spike
+  - FxTemporaire
+  - Flood
   layers:
   - Default
   - TransparentFX

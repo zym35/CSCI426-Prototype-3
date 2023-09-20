@@ -10,20 +10,13 @@ public class BackgroundGenerator : MonoBehaviour
     public Transform player;
     public float unitLength = 20;
     public float spawnAheadDist;
-    float _lastSpawnY = 0; 
+    float _lastSpawnY = 0;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
     void Update()
     {
         if (player.position.y + spawnAheadDist > _lastSpawnY)
         {
-            var pos = new Vector2(0, _lastSpawnY + unitLength);
+            var pos = new Vector3(0, _lastSpawnY + unitLength, .5f);
             Instantiate(backgroundPrefab, pos, Quaternion.identity);
             _lastSpawnY += unitLength;
         }

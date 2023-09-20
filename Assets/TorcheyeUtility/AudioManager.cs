@@ -13,6 +13,7 @@ namespace TorcheyeUtility
             Jump,
             ShootTongue,
             CutTongue,
+            RetractTongue,
             Spikes,
             Water
         }

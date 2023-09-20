@@ -74,6 +74,7 @@ public class Piranha : MonoBehaviour
                 if (TongueIsOut(.01f) && BelowPlayer(t2p) || TongueIsTooLong())
                 {
                     _status = Status.Retreat;
+                    AudioManager.Instance.PlaySoundEffect(AudioManager.SoundEffect.RetractTongue);
                     _player.GetComponent<Player>().DetachPiranha(this);
                 }
                 else
@@ -97,6 +98,7 @@ public class Piranha : MonoBehaviour
                 if (TongueIsOut(.01f) && BelowPlayer(t2p) || TongueIsTooLong())
                 {
                     _status = Status.Retreat;
+                    AudioManager.Instance.PlaySoundEffect(AudioManager.SoundEffect.RetractTongue);
                     _player.GetComponent<Player>().DetachPiranha(this);
                 }
                 break;
